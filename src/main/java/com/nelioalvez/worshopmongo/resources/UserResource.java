@@ -37,7 +37,7 @@ public class UserResource {
 	
 	
 	
-	@RequestMapping(value = "/{id}", method=RequestMethod.GET) //indica o endereco /users/id 
+	@RequestMapping(value = "/{id}", method=RequestMethod.GET) //indica o metodo Http Get
 	public ResponseEntity <UserDTO> findById(@PathVariable String id){ //relaciona o ID passado na URL com o id que o metodo recebera
 		
 		User obj = service.findById(id);
@@ -45,7 +45,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(new UserDTO(obj));
 	}
 	
-	@RequestMapping( method=RequestMethod.POST)
+	@RequestMapping( method=RequestMethod.POST) //indica o metodo Http Post(Insert)
 	//ou @PostMapping
 	public ResponseEntity <Void> insert(@RequestBody UserDTO objDto){ //@RequestBody para permitir que ele recebe um objeto no endpoint
 		
@@ -54,5 +54,14 @@ public class UserResource {
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
+		//retorna o endereco do elemento criado no exemplo foi http://localhost:8080/users/63d3ffd36dd54151c39b2d1d onde o caminho leva ao User criado
+	}
+	
+	@RequestMapping(value = "/{id}", method=RequestMethod.DELETE) //indica o metodo Http Delete
+	public ResponseEntity <Void> deleteById(@PathVariable String id){ //relaciona o ID passado na URL com o id que o metodo recebera
+		
+		service.delete(id);
+		
+		return ResponseEntity.noContent().build(); //o no content é usado pois o retorno é vazio nesse metodo
 	}
 }
