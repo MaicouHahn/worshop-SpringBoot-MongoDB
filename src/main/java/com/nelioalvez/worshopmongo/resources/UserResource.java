@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.nelioalvez.worshopmongo.domain.Post;
 import com.nelioalvez.worshopmongo.domain.User;
 import com.nelioalvez.worshopmongo.dto.UserDTO;
 import com.nelioalvez.worshopmongo.services.UserService;
@@ -76,4 +77,13 @@ public class UserResource {
 		
 		
 	}
+	
+	@RequestMapping(value = "/{id}/posts", method=RequestMethod.GET) //indica o metodo Http Get
+	public ResponseEntity <List<Post>> findPosts(@PathVariable String id){ //relaciona o ID passado na URL com o id que o metodo recebera
+		
+		User obj = service.findById(id);
+		return ResponseEntity.ok().body(obj.getPosts());
+	}
+	
+	
 }
