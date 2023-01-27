@@ -24,6 +24,7 @@ public class UserService  {
 	public User findById(String id) {
 		
 		Optional<User> obj = repo.findById(id);
+		
 		return obj.orElseThrow(()-> new ObjectNotFoundException("Objeto não encontrado"));
 		
 	}
@@ -37,6 +38,20 @@ public class UserService  {
 		repo.deleteById(id);
 	}
 	
+	public User update(User obj) {
+		User newObj = findById(obj.getId());//cria um objeto copia que recebe as informaçoes do User relacionado ao ID que foi passado
+		updateData(newObj,obj);//nesse metodo ele altera o objeto copiado com as informaçoes passadas no endpoint
+		
+		return repo.save(newObj);//e aqui faz o update
+	}
+	
+	private void updateData(User newObj, User obj) {
+		
+		newObj.setName(obj.getName());
+		newObj.setEmail(obj.getEmail());
+		
+	}
+
 	public User fromDTO(UserDTO objDto) {
 		return new User(objDto.getId(),objDto.getName(),objDto.getEmail());
 	}
