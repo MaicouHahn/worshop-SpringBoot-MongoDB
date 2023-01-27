@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import com.nelioalvez.worshopmongo.domain.Post;
 import com.nelioalvez.worshopmongo.domain.User;
 import com.nelioalvez.worshopmongo.dto.AuthorDTO;
+import com.nelioalvez.worshopmongo.dto.CommentDTO;
 import com.nelioalvez.worshopmongo.repository.PostRepository;
 import com.nelioalvez.worshopmongo.repository.UserRepository;
 
@@ -37,9 +38,16 @@ public class Instantiation implements CommandLineRunner {
 		
 		userRepository.saveAll(Arrays.asList(maria,alex,bob));//é salvo os usuarios antes para que tenham um ID proprio e depois é feito a copia do Dto abaixo
 		
+		
 		Post post1 = new Post(null,sdf.parse("21/03/2018"),"Partiu viajem","Vou viajar para São Paulo. Abraços",new AuthorDTO(maria));
 		Post post2 = new Post(null,sdf.parse("23/03/2018"),"Bom dia","Acordei feliz hoje!",new AuthorDTO(maria));
 		
+		CommentDTO comment1 = new CommentDTO("Boa Viajem mano!",sdf.parse("21/03/2018"),new AuthorDTO(alex));
+		CommentDTO comment2 = new CommentDTO("Aproveite",sdf.parse("22/03/2018"),new AuthorDTO(bob));
+		CommentDTO comment3 = new CommentDTO("Tenha um ótimo dia!",sdf.parse("23/03/2018"),new AuthorDTO(alex));
+		
+		post1.getComments().addAll(Arrays.asList(comment1,comment2));
+		post2.getComments().addAll(Arrays.asList(comment3));
 		
 		postRepository.saveAll(Arrays.asList(post1,post2));
 		
